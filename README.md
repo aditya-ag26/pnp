@@ -11,10 +11,25 @@ npm run dev              # http://localhost:5173
 npm run build            # production build in dist/
 npm run preview          # serve that build locally
 npm run optimize:model   # rebuild the 3D model (only after changing it — see below)
+npm run deploy           # build and publish to AWS (see Deploying)
 ```
 
 The site uses real URLs (`/experiences`, `/about`, `/contact`), so the host must serve
 `index.html` for unknown paths (the usual single-page-app rewrite).
+
+## Deploying
+
+The site is hosted on AWS: a private S3 bucket (Mumbai) behind CloudFront.
+Live at https://d3lbzlaowgeijo.cloudfront.net
+
+```bash
+aws login --profile personal      # sign in (opens the browser)
+set AWS_PROFILE=personal          # PowerShell: $env:AWS_PROFILE = "personal"
+npm run deploy
+```
+
+`scripts/deploy.mjs` uploads only what changed and refreshes the cache; changes are live within a
+minute or two. The first run created the bucket and the distribution.
 
 ## Where things are
 
