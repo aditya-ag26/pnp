@@ -1,0 +1,309 @@
+/* ── Inner pages: Experiences, About, Contact ──────────────────────────── */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(4rem, 9vw, 7.5rem);
+  max-width: 82rem;
+  min-height: 80vh;
+  margin-inline: auto;
+  padding: clamp(8rem, 16vh, 11rem) var(--gutter) clamp(4rem, 9vw, 7rem);
+}
+
+.page--centered {
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  text-align: center;
+}
+
+/* Page background runs edge to edge behind the centred column. */
+main:has(> .page) {
+  background:
+    radial-gradient(50vw 40vw at 85% 0%, rgb(247 222 208 / 0.9), transparent 70%),
+    linear-gradient(180deg, var(--color-cream-light) 0%, var(--color-cream) 45%, var(--color-peach) 100%);
+}
+
+.page-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.35rem;
+  max-width: 50rem;
+}
+
+.display--page {
+  font-size: clamp(2.6rem, 5vw, 4.6rem);
+}
+
+.lead--wide {
+  max-width: 36rem;
+}
+
+.title--small {
+  font-size: clamp(1.8rem, 2.8vw, 2.5rem);
+}
+
+/* ── Experiences ── */
+.experience-list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.experience {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  padding: clamp(1.5rem, 3.5vw, 3rem);
+  border: 1px solid rgb(255 255 255 / 0.7);
+  border-radius: clamp(1.75rem, 3vw, 2.75rem);
+  background: rgb(250 245 239 / 0.72);
+  box-shadow: 0 30px 60px -40px rgb(74 50 40 / 0.35);
+}
+
+.experience:nth-child(even) .experience__art {
+  order: 2;
+}
+
+.experience__art {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 5 / 4;
+  border-radius: clamp(1.25rem, 2.2vw, 2rem);
+  background: radial-gradient(closest-side, var(--color-peach), transparent 92%);
+}
+
+.experience__art img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  animation: bob 5s ease-in-out infinite;
+}
+
+.experience:nth-child(2) .experience__art img {
+  animation-delay: -1.6s;
+}
+
+.experience:nth-child(3) .experience__art img {
+  animation-delay: -3.2s;
+}
+
+.experience__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.experience__copy .title {
+  margin-bottom: -0.4rem;
+}
+
+.experience__copy .button {
+  margin-top: 0.75rem;
+}
+
+/* ── Cards ── */
+.notes {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 1.75rem);
+}
+
+.card {
+  padding: clamp(1.5rem, 2.5vw, 2.25rem);
+  border-radius: 1.75rem;
+  background: rgb(250 245 239 / 0.8);
+  box-shadow: 0 24px 50px -36px rgb(74 50 40 / 0.4);
+}
+
+.card h3 {
+  margin-bottom: 0.6rem;
+  color: var(--color-chocolate);
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.card p {
+  line-height: 1.65;
+  color: var(--color-brown-light);
+}
+
+/* ── Banner ── */
+.banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.75rem;
+  padding: clamp(1.75rem, 4vw, 3.25rem);
+  border-radius: clamp(1.75rem, 3vw, 2.75rem);
+  background: var(--color-blush);
+}
+
+.banner > div:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.banner .lead {
+  color: var(--color-brown);
+}
+
+.banner .button {
+  background: var(--color-cream-light);
+}
+
+.banner__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.75rem;
+}
+
+/* ── About ── */
+.story {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(2.5rem, 6vw, 6rem);
+}
+
+.story__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.35rem;
+}
+
+.story__signature {
+  color: var(--color-rose-dark);
+  font-size: 1.15rem;
+  font-style: italic;
+  font-weight: 500;
+}
+
+/* ── Contact ── */
+.contact {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(2rem, 5vw, 5rem);
+}
+
+.contact__details {
+  display: grid;
+  gap: 1.75rem;
+}
+
+.contact__details li {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  line-height: 1.6;
+  color: var(--color-brown-light);
+}
+
+.contact__details h3 {
+  color: var(--color-chocolate);
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+
+.contact__details a {
+  transition: color 0.3s var(--ease);
+}
+
+.contact__details a:hover {
+  color: var(--color-rose-dark);
+}
+
+.contact__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: var(--color-blush);
+  color: var(--color-brown);
+  font-size: 1.15rem;
+}
+
+.contact__details .contact__book {
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid rgb(107 66 38 / 0.12);
+}
+
+.contact__form {
+  display: grid;
+  gap: 1.1rem;
+  padding: clamp(1.5rem, 3.5vw, 2.75rem);
+  border-radius: clamp(1.75rem, 3vw, 2.5rem);
+  background: rgb(250 245 239 / 0.8);
+  box-shadow: 0 30px 60px -40px rgb(74 50 40 / 0.4);
+}
+
+.contact__form label {
+  display: grid;
+  gap: 0.4rem;
+  color: var(--color-brown);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.contact__form ::placeholder {
+  color: color-mix(in srgb, var(--color-brown-light) 60%, transparent);
+}
+
+.contact__form input,
+.contact__form textarea {
+  padding: 0.8rem 1.1rem;
+  border: 1.5px solid rgb(107 66 38 / 0.16);
+  border-radius: 1rem;
+  background: var(--color-cream-light);
+  color: var(--color-chocolate);
+  font-size: 1rem;
+  font-weight: 400;
+  resize: vertical;
+  transition: border-color 0.3s var(--ease);
+}
+
+.contact__form input:focus,
+.contact__form textarea:focus {
+  border-color: var(--color-rose);
+  outline: none;
+}
+
+.contact__form .button {
+  justify-self: start;
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 900px) {
+  .experience,
+  .story,
+  .contact {
+    grid-template-columns: 1fr;
+  }
+
+  .experience:nth-child(even) .experience__art {
+    order: 0;
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}

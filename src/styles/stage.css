@@ -1,0 +1,333 @@
+/* ── The pinned 3D stage ───────────────────────────────────────────────── */
+
+/* Tall track: 100vh of stage + scroll room for the two island transitions. */
+.stage-track {
+  position: relative;
+  height: 400vh;
+  height: 400svh;
+}
+
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--color-cream-light) 0%, var(--color-cream) 55%, var(--color-cream) 100%);
+}
+
+/* Soft halo behind the resting island. */
+.stage-glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(48vw 48vw at 67.5% 52%, rgb(247 222 208 / 0.95), transparent 68%),
+    radial-gradient(30vw 30vw at 8% 92%, rgb(242 213 196 / 0.45), transparent 70%);
+  pointer-events: none;
+}
+
+.stage-canvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* ── Text panels ── */
+.panel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  padding: 5rem var(--gutter) 2rem;
+  pointer-events: none;
+  /* --d: distance (in sections) between this panel and the scene; set from JS. */
+  --d: 0;
+}
+
+.panel__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.35rem;
+  width: min(100%, 34rem);
+}
+
+.panel[data-active] .panel__inner {
+  pointer-events: auto;
+}
+
+/* Each line trails the scroll a little more than the one above it. */
+.panel__inner > * {
+  translate: 0 calc(var(--d) * var(--trail, 70) * 1px);
+}
+.panel__inner > :nth-child(2) {
+  --trail: 100;
+}
+.panel__inner > :nth-child(3) {
+  --trail: 130;
+}
+.panel__inner > :nth-child(4) {
+  --trail: 160;
+}
+.panel__inner > :nth-child(5) {
+  --trail: 190;
+}
+
+.panel .title {
+  margin-bottom: -0.6rem;
+}
+
+.panel .button,
+.panel .text-link {
+  margin-top: 0.5rem;
+}
+
+/* ── Explore mode ── */
+.explore {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.7s var(--ease),
+    visibility 0.7s;
+}
+
+.explore[data-open] {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0.35s;
+}
+
+.explore__surface {
+  position: absolute;
+  inset: 0;
+  cursor: grab;
+  touch-action: none;
+}
+
+.explore__surface:active {
+  cursor: grabbing;
+}
+
+.explore__back {
+  position: absolute;
+  top: clamp(1rem, 3vh, 2rem);
+  left: clamp(1.25rem, 4vw, 3.5rem);
+  flex-direction: row;
+  padding: 0.4rem 1.2rem 0.4rem 0.45rem;
+}
+
+.explore__meet {
+  position: absolute;
+  top: clamp(1rem, 3vh, 2rem);
+  right: clamp(1.25rem, 4vw, 3.5rem);
+  background: rgb(250 245 239 / 0.85);
+}
+
+.explore__controls {
+  position: absolute;
+  right: clamp(1.25rem, 4vw, 3.5rem);
+  bottom: clamp(1.25rem, 4vh, 2.5rem);
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.3rem;
+  border: 1.5px solid color-mix(in srgb, var(--color-brown-light) 35%, transparent);
+  border-radius: 999px;
+  background: rgb(250 245 239 / 0.8);
+  backdrop-filter: blur(12px);
+}
+
+.explore__controls button {
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 50%;
+  color: var(--color-brown);
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition:
+    background 0.3s var(--ease),
+    color 0.3s var(--ease);
+}
+
+.explore__controls button:hover {
+  background: var(--color-brown);
+  color: var(--color-cream);
+}
+
+.explore__hint {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(1.75rem, 5vh, 3rem);
+  translate: -50% 0;
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--color-brown-light);
+  pointer-events: none;
+}
+
+/* The glow follows the island to the centre; dots and hint step aside. */
+.stage-glow {
+  transition: transform 1.3s var(--ease);
+}
+
+.stage[data-exploring] .stage-glow {
+  transform: translateX(-17.5vw) scale(1.2);
+}
+
+.stage[data-exploring] .stage-dots,
+.stage[data-exploring] .scroll-hint {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.stage-dots {
+  transition: opacity 0.5s var(--ease);
+}
+
+/* ── Section dots ── */
+.stage-dots {
+  position: absolute;
+  top: 50%;
+  right: clamp(0.9rem, 2vw, 2rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  transform: translateY(-50%);
+}
+
+.stage-dot {
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  cursor: pointer;
+}
+
+.stage-dot::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 6px;
+  background: var(--color-rose);
+  opacity: 0.5;
+  transition:
+    height 0.5s var(--ease),
+    opacity 0.5s var(--ease),
+    background 0.5s var(--ease);
+}
+
+.stage-dot:hover::before {
+  opacity: 1;
+}
+
+.stage-dot[aria-current]::before {
+  height: 22px;
+  background: var(--color-brown);
+  opacity: 1;
+}
+
+/* ── Scroll hint ── */
+.scroll-hint {
+  position: absolute;
+  left: var(--gutter);
+  bottom: clamp(1.5rem, 5vh, 3rem);
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-brown-light);
+  transition:
+    opacity 0.6s var(--ease),
+    transform 0.6s var(--ease);
+}
+
+.scroll-hint[data-hidden] {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.scroll-hint__circle {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1.5px solid color-mix(in srgb, var(--color-brown-light) 50%, transparent);
+  border-radius: 50%;
+  animation: nudge 2.2s ease-in-out infinite;
+}
+
+@keyframes nudge {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+
+/* ── Portrait screens: island on top, copy underneath ──
+   Keep this breakpoint in sync with `getLayout()` in src/scene/layout.ts. */
+@media (max-aspect-ratio: 19/20) {
+  .stage-glow {
+    background: radial-gradient(90vw 90vw at 50% 33%, rgb(247 222 208 / 0.95), transparent 68%);
+  }
+
+  .panel {
+    align-items: flex-end;
+    padding: 0 var(--gutter) clamp(4.5rem, 11svh, 7rem);
+  }
+
+  .panel__inner {
+    gap: 0.9rem;
+  }
+
+  .display {
+    font-size: clamp(2.5rem, 11vw, 3.6rem);
+  }
+
+  .title {
+    font-size: clamp(2.1rem, 9vw, 3rem);
+  }
+
+  .panel .badge {
+    width: 2.4rem;
+    height: 2.4rem;
+  }
+
+  .scroll-hint {
+    bottom: 1.25rem;
+    font-size: 0.8rem;
+  }
+
+  .scroll-hint__circle {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .stage-dots {
+    top: 33%;
+  }
+
+  .stage[data-exploring] .stage-glow {
+    transform: translateY(17svh) scale(1.2);
+  }
+
+  .explore__hint {
+    bottom: 5.5rem;
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-height: 560px) {
+  .scroll-hint {
+    display: none;
+  }
+}
